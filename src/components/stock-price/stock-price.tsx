@@ -7,13 +7,16 @@ import { AV_API_KET } from "../../global/global";
   shadow: true,
 })
 export class StockPrice {
+  stockInput: HTMLInputElement
+
   @Element() el: HTMLElement;
 
   @State() fetchedPrice: number;
 
   onFetchStockPrice(event: Event) {
     event.preventDefault();
-    const stockSymbol = (this.el.shadowRoot.querySelector('#stock-symbol') as HTMLInputElement ).value;
+    // const stockSymbol = (this.el.shadowRoot .querySelector('#stock-symbol') as HTMLInputElement ).value;
+    const stockSymbol = this.stockInput.value;
     // axios
     fetch(`https://www.alphavantage.co/query?function=GLOBAL_QUOTE&symbol=${stockSymbol}&apikey=${AV_API_KET}`)
       .then(res => {
@@ -31,7 +34,7 @@ export class StockPrice {
   render() {
     return [
       <form onSubmit={this.onFetchStockPrice.bind(this)}>
-        <input id="stock-symbol" />
+        <input id="stock-symbol" ref={el => this.stockInput = el} />
         <button type="submit">Fetch</button>
       </form>,
       <div>
