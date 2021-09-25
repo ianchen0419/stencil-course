@@ -1,14 +1,64 @@
 <!DOCTYPE html>
 <html dir="ltr" lang="en">
-  <head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=5.0" />
-    <title>Stencil Component Starter</title>
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=5.0">
+  <title>Stencil Component Starter</title>
+  <style>
+    body {
+      font-family: sans-serif;
+    }
 
-    <script type="module" src="/build/stencil-course.esm.js"></script>
-    <script nomodule src="/build/stencil-course.js"></script>
-  </head>
-  <body>
-    <my-component first="Stencil" last="'Don't call me a framework' JS"></my-component>
-  </body>
+    .side-nav ul {
+      list-style: none;
+    }
+
+    .side-nav li {
+      margin: 1rem 0;
+    }
+
+    .side-nav a {
+      text-decoration: none;
+      color: black;
+    }
+  </style>
+  <script src="/build/mycomponent.js"></script>
+</head>
+<body>
+  <button id="side-drawer-button">Open Side Menu</button>
+  <p>Let's test this new <uc-tooltip text="We build this before, now it's better now!">Tooltip!</uc-tooltip></p>
+  <uc-side-drawer title="Main Menu">
+    <nav class="side-nav">
+      <ul>
+        <li>
+          <a href="/">A Link</a>
+        </li>
+        <li>
+          <a href="/">Another Link</a>
+        </li>
+        <li>
+          <a href="/">A Third Link</a>
+        </li>
+      </ul>
+    </nav>
+  </uc-side-drawer>
+
+  <script>
+    const sideDrawerButton = document.querySelector('#side-drawer-button');
+    const sideDrawer = document.querySelector('uc-side-drawer');
+    setTimeout(() => {
+      // sideDrawer.title = 'It Changed!';
+      // sideDrawer.setAttribute('title', 'It Changed vie Attribute');
+    }, 2000);
+
+    sideDrawerButton.addEventListener('click', () => {
+      if (!sideDrawer.opened) {
+        // sideDrawer.open=true;
+        sideDrawer.open();
+      }
+    });
+
+
+  </script>
+</body>
 </html>
