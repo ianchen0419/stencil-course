@@ -1,4 +1,4 @@
-import { Component, State, Element, Prop } from "@stencil/core";
+import { Component, State, Element, Prop, Watch } from "@stencil/core";
 import { AV_API_KET } from "../../global/global";
 
 @Component({
@@ -8,7 +8,7 @@ import { AV_API_KET } from "../../global/global";
 })
 export class StockPrice {
   stockInput: HTMLInputElement;
-  initialStockSymbol: string;
+  // initialStockSymbol: string;
 
   @Element() el: HTMLElement;
 
@@ -17,7 +17,15 @@ export class StockPrice {
   @State() stcokInputValid = false;
   @State() error: string;
 
-  @Prop() stockSymbol: string;
+  @Prop({mutable: true, reflectToAttr: true}) stockSymbol: string;
+
+  @Watch('stockSymbol')
+  stockSymbolChanged(newValue: string, oldValue: string) {
+    if(newValue != oldValue) {
+      this.stockUserInput = newValue;
+      this.fetchStockPrice(newValue);
+    }
+  }
 
   onUserInput(event: Event) {
     this.stockUserInput = (event.target as HTMLInputElement ).value;
@@ -31,9 +39,9 @@ export class StockPrice {
   onFetchStockPrice(event: Event) {
     event.preventDefault();
     // const stockSymbol = (this.el.shadowRoot .querySelector('#stock-symbol') as HTMLInputElement ).value;
-    const stockSymbol = this.stockInput.value;
+    this.stockSymbol = this.stockInput.value;
     // axios
-    this.fetchStockPrice(stockSymbol);
+    // this.fetchStockPrice(stockSymbol);
   }
 
   componentWillLoad() {
@@ -44,7 +52,7 @@ export class StockPrice {
   componentDidLoad() {
     console.log('ComonentDidLoad');
     if (this.stockSymbol) {
-      this.initialStockSymbol = this.stockSymbol;
+      // this.initialStockSymbol = this.stockSymbol;
       this.stockUserInput = this.stockSymbol;
       this.stcokInputValid = true;
       this.fetchStockPrice(this.stockSymbol);
@@ -57,10 +65,10 @@ export class StockPrice {
 
   componentDidUpdate() {
     console.log('componentDidUpdate');
-    if (this.stockSymbol !== this.initialStockSymbol) {
-      this.initialStockSymbol = this.stockSymbol;
-      this.fetchStockPrice(this.stockSymbol);
-    }
+    // if (this.stockSymbol !== this.initialStockSymbol) {
+    //   this.initialStockSymbol = this.stockSymbol;
+    //   this.fetchStockPrice(this.stockSymbol);
+    // }
   }
 
   componentDidUnload() {
